@@ -6,31 +6,6 @@
 - include: install_redhat.yml
   when: ansible_os_family == 'RedHat'
 
-# corrections to run with other jetty applications
-#  create groups and adjust user
-- name: Rundeck | Ensure jetty group exists
-  group: >
-    name=jetty
-    system=yes
-  when: ansible_os_family == 'Debian'
-  tags:
-    - rundeck
-    - users
-    - groups
-
-- name: Rundeck | Ensure rundeck user is apart of jetty group
-  user: >
-    name=rundeck
-    groups=jetty
-    createhome=yes
-    home=/var/lib/rundeck
-    system=yes
-  when: ansible_os_family == 'Debian'
-  tags:
-    - rundeck
-    - users
-    - groups
-
 - name: Rundeck | Ensure tmp directory has correct permissions
   file:
     path: /tmp/rundeck

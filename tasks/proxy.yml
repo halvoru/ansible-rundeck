@@ -1,0 +1,16 @@
+---
+- yum: name=nginx state=installed
+
+- name: create self-signed SSL cert
+  command: openssl req -new -nodes -x509 -subj "/C=NO/ST=Oslo/L=Oslo/O=IT/CN={{rundeck_domain}}" -days 3650 -keyout /etc/nginx/rundeck.key -out /etc/nginx/rundeck.crt -extensions v3_ca creates=/etc/nginx/rundeck.crt
+  notify: restart nginx
+
+- name: install nginx config
+  template: src=vhost.conf.j2 dest=/etc/nginx/conf.d/rundeck.conf
+  notify: restart nginx
+
+- seboolean: name=httpd_can_network_connect state=yes persistent=yes
+
+- firewalld: service=http permanent=true state=enabled
+
+- firewalld: service=https permanent=true state=enabled

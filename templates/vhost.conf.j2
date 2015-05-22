@@ -1,0 +1,52 @@
+upstream rundeck { server 127.0.0.1:4440; }
+
+server {
+  
+  listen      [::]:80;
+  listen      80;
+  server_name {{ rundeck_domain }};
+
+  location / {
+    rewrite ^ https://$host$request_uri permanent;
+  }
+}
+
+server {
+  listen 443;
+
+  error_log /var/log/nginx/rundeck.error.log debug;
+  access_log /var/log/nginx/rundeck.access.log;
+
+
+  ssl on;
+  ssl_certificate rundeck.crt;
+  ssl_certificate_key rundeck.key;
+
+  ssl_session_timeout 5m;
+
+  ssl_protocols SSLv3 TLSv1;
+  ssl_ciphers ALL:!ADH:!EXPORT56:RC4+RSA:+HIGH:+MEDIUM:+LOW:+SSLv3:+EXP;
+  ssl_prefer_server_ciphers on;
+
+  server_name {{ rundeck_domain }};
+
+  proxy_http_version 1.1;
+  proxy_set_header Upgrade $http_upgrade;
+  proxy_set_header Connection "upgrade";
+  proxy_set_header Host $http_host;
+  proxy_set_header X-Real-IP $remote_addr;
+  proxy_set_header Authorization "";
+  proxy_set_header X-Forwarded-Proto $scheme;
+  proxy_set_header X-Forwarded-For $remote_addr;
+  proxy_set_header X-Forwarded-Port $server_port;
+  proxy_set_header X-Request-Start $msec;
+
+  client_max_body_size 0;
+
+  chunked_transfer_encoding on;
+
+  location / {
+    proxy_pass  http://rundeck;
+    proxy_read_timeout 900;
+  }
+}

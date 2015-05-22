@@ -10,5 +10,12 @@ rundeck_database_pass: 'rundeck'
 rundeck_users: []  # list of users as dictionary of name, password and list of roles
 rundeck_plugins: []  # list of plugin urls that are downloaded and installed into the rundeck libext.
 rundeck_generate_ssh: True  # automatically generate ssh key, set to False to stop this action.
+rundeck_nginx_proxy: True  #  Set up a nginx proxy in front of rundeck
 # OS, kept for backward compatibility, use rundeck_download_path instead.
 temp_dir: /tmp
+# LDAP Auth
+rundeck_ldap_enabled: False
+rundeck_ldap_url: 'ldaps://ldap.my.org'
+rundeck_ldap_user_base: 'cn=users,dc=my,dc=org'
+rundeck
+
