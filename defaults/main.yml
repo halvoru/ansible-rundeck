@@ -17,5 +17,11 @@ temp_dir: /tmp
 rundeck_ldap_enabled: False
 rundeck_ldap_url: 'ldaps://ldap.my.org'
 rundeck_ldap_user_base: 'cn=users,dc=my,dc=org'
-rundeck
-
+rundeck_ldap_role_base: 'cn=filegroups,cn=system,dc=my,dc=org'
+rundeck_ldap_user_id: uid
+rundeck_ldap_password: userPassword
+rundeck_ldap_user_class: account
+rundeck_ldap_role_id: cn
+rundeck_ldap_role_memberid: memberUid
+rundeck_ldap_role_class: posixGroup
+rundeck_ldap_user_role: users

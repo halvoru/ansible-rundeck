@@ -16,19 +16,6 @@
     - rundeck
     - users
 
-# configuration adjustment
-- name: Rundeck | Ensure upstart setgid is set to jetty group
-  lineinfile: >
-    dest=/etc/init/rundeckd.conf
-    regexp="^setgid "
-    line="setgid jetty"
-  when: ansible_os_family == 'Debian'
-  notify:
-    - restart rundeck
-  tags:
-    - rundeck
-    - configuration
-
 - name: Rundeck | Ensure server url is configured
   lineinfile: >
     dest=/etc/rundeck/rundeck-config.properties
@@ -49,6 +36,9 @@
 
 # user management
 - include: users.yml
+# ldap users
+- include: ldap.yml
+  when: rundeck_ldap_enabled == True
 
 # extras
 - name: download rundeck plugins
@@ -65,3 +55,6 @@
 # ssh key generation
 - include: ssh.yml
   when: rundeck_generate_ssh == True
+
+- include: proxy.yml
+  when: rundeck_nginx_proxy == True

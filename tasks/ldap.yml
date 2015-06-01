@@ -1,0 +1,21 @@
+- name: Set the right role for LDAP Auth (must use local-name because of default xmlns).
+  xml: file=/var/lib/rundeck/exp/webapp/WEB-INF/web.xml xpath="/*[local-name()='web-app']/*[local-name()='security-role']/*[local-name()='role-name']" value="{{rundeck_ldap_user_role}}"
+  notify: restart rundeck
+
+- name: Install LDAP auth config
+  template: src=ldap.conf.j2 dest=/etc/rundeck/jaas-ldap.conf
+  notify: restart rundeck
+
+- name: Point to right file
+  lineinfile: 
+    dest: /etc/rundeck/profile 
+    regexp: "java.security.auth.login.config"
+    line: export RDECK_JVM="-Djava.security.auth.login.config=/etc/rundeck/jaas-ldap.conf \
+  notify: restart rundeck
+
+- name: Point to right module
+  lineinfile: 
+    dest: /etc/rundeck/profile
+    regexp: "loginmodule.name"
+    line:        -Dloginmodule.name=jaas-ldap \
+  notify: restart rundeck
