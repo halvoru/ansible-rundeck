@@ -10,12 +10,12 @@
   lineinfile: 
     dest: /etc/rundeck/profile 
     regexp: "java.security.auth.login.config"
-    line: export RDECK_JVM="-Djava.security.auth.login.config=/etc/rundeck/jaas-ldap.conf \
+    line: export RDECK_JVM="-Djava.security.auth.login.config=/etc/rundeck/jaas-ldap.conf \\
   notify: restart rundeck
 
 - name: Point to right module
   lineinfile: 
     dest: /etc/rundeck/profile
     regexp: "loginmodule.name"
-    line:        -Dloginmodule.name=jaas-ldap \
+    line:        -Dloginmodule.name=jaas-ldap \\
   notify: restart rundeck
