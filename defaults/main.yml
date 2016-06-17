@@ -24,4 +24,4 @@ rundeck_ldap_user_class: account
 rundeck_ldap_role_id: cn
 rundeck_ldap_role_memberid: memberUid
 rundeck_ldap_role_class: posixGroup
-rundeck_ldap_user_role: users
+rundeck_ldap_user_role: user
