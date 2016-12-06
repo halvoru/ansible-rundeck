@@ -9,7 +9,7 @@
     line: "{{ item.name }}: {{ item.password }},{{ item.roles|join(',')}}"
     state: present
   when: rundeck_users|length > 0
-  with_items: rundeck_users
+  with_items: '{{ rundeck_users }}'
   notify:
     - restart rundeck
   tags:
